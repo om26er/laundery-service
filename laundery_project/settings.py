@@ -35,6 +35,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'laundery_project.urls'
 AUTH_USER_MODEL = 'laundery_app.User'
+APP_NAME = 'Laundry Service'
 
 TEMPLATES = [
     {
