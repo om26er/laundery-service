@@ -8,7 +8,9 @@ from laundery_app.views import (
     Login,
     Activate,
     Profile,
-    Status
+    Status,
+    AddAddressAPIView,
+    CategoryAPIView,
 )
 
 
@@ -21,4 +23,6 @@ urlpatterns = [
     url(r'^api/user/change-password$', ChangePassword.as_view()),
     url(r'^api/user/status$', Status.as_view()),
     url(r'^api/user/me$', Profile.as_view()),
+    url(r'^api/user/addresses$', AddAddressAPIView.as_view()),
+    url(r'^api/laundry/categories$', CategoryAPIView.as_view()),
 ]
