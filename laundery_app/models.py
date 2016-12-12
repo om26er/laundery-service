@@ -14,3 +14,16 @@ class Address(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=255, blank=False)
     location = models.CharField(max_length=255, blank=False)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, blank=False)
+    price = models.CharField(max_length=255, blank=False)
+    image = models.ImageField(blank=True)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return '{}@{}'.format(self.name, self.price)

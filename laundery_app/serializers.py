@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from laundery_app.models import User, Address
+from laundery_app.models import User, Address, Category
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -33,4 +33,18 @@ class AddressSerializer(serializers.ModelSerializer):
         fields = (
             'name',
             'location',
+        )
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    price = serializers.CharField(required=True)
+    image = serializers.ImageField(required=False)
+
+    class Meta:
+        model = Category
+        fields = (
+            'name',
+            'price',
+            'image',
         )
