@@ -1,4 +1,5 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework import permissions
 
 from simple_login.views import (
     ActivationKeyRequestAPIView,
@@ -10,8 +11,8 @@ from simple_login.views import (
     StatusAPIView,
 )
 
-from laundery_app.models import User
-from laundery_app.serializers import UserSerializer
+from laundery_app.models import User, Address
+from laundery_app.serializers import UserSerializer, AddressSerializer
 
 
 class Register(CreateAPIView):
@@ -51,3 +52,14 @@ class ChangePassword(PasswordChangeAPIView):
 class Status(StatusAPIView):
     user_model = User
     serializer_class = UserSerializer
+
+
+class AddAddressAPIView(ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = AddressSerializer
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

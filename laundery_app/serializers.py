@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from laundery_app.models import User
+from laundery_app.models import User, Address
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     password = serializers.CharField(write_only=True)
     full_name = serializers.CharField(required=True)
-    phone_number = serializers.CharField(required=True)
+    mobile_number = serializers.CharField(required=True)
 
     class Meta:
         model = User
@@ -20,5 +20,17 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'password',
             'full_name',
-            'phone_number',
+            'mobile_number',
+        )
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    location = serializers.CharField(required=True)
+
+    class Meta:
+        model = Address
+        fields = (
+            'name',
+            'location',
         )
