@@ -2,7 +2,6 @@ from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     ListCreateAPIView,
-    RetrieveAPIView,
 )
 from rest_framework import permissions
 
@@ -80,7 +79,7 @@ class CategoryAPIView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class SubCategoryAPIView(RetrieveAPIView):
+class SubCategoryAPIView(ListAPIView):
     serializer_class = SubCategorySerializer
 
     def get_queryset(self):
