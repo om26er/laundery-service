@@ -2,6 +2,7 @@ from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     ListCreateAPIView,
+    RetrieveAPIView,
 )
 from rest_framework import permissions
 
@@ -15,11 +16,12 @@ from simple_login.views import (
     StatusAPIView,
 )
 
-from laundery_app.models import User, Address, Category
+from laundery_app.models import User, Address, Category, SubCategory
 from laundery_app.serializers import (
     UserSerializer,
     AddressSerializer,
     CategorySerializer,
+    SubCategorySerializer,
 )
 
 
@@ -76,3 +78,10 @@ class AddAddressAPIView(ListCreateAPIView):
 class CategoryAPIView(ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+
+class SubCategoryAPIView(RetrieveAPIView):
+    serializer_class = SubCategorySerializer
+
+    def get_queryset(self):
+        return SubCategory.objects.filter(category__id=int(self.kwargs['pk']))

@@ -18,12 +18,26 @@ class Address(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255, blank=False)
-    price = models.CharField(max_length=255, blank=False)
-    image = models.ImageField(blank=True)
 
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return '{}@{}'.format(self.name, self.price)
+        return self.name
+
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category)
+    name = models.CharField(max_length=255, blank=False)
+    price = models.CharField(max_length=255, blank=False)
+    image = models.ImageField(blank=True)
+
+    class Meta:
+        verbose_name = "Sub Category"
+        verbose_name_plural = "Sub Categories"
+
+    def __str__(self):
+        return '{} - {}@{} SAR'.format(
+            self.category.name, self.name, self.price
+        )

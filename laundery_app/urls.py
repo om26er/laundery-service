@@ -11,6 +11,7 @@ from laundery_app.views import (
     Status,
     AddAddressAPIView,
     CategoryAPIView,
+    SubCategoryAPIView,
 )
 
 
@@ -25,4 +26,6 @@ urlpatterns = [
     url(r'^api/user/me$', Profile.as_view()),
     url(r'^api/user/addresses$', AddAddressAPIView.as_view()),
     url(r'^api/laundry/categories$', CategoryAPIView.as_view()),
+    url(r'^api/laundry/categories/(?P<pk>[0-9]+)$',
+        SubCategoryAPIView.as_view()),
 ]

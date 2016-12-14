@@ -38,13 +38,17 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', )
+
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
     price = serializers.CharField(required=True)
     image = serializers.ImageField(required=False)
 
     class Meta:
         model = Category
-        fields = (
-            'name',
-            'price',
-            'image',
-        )
+        fields = ('name', 'price', 'image', )
