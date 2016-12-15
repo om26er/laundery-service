@@ -86,11 +86,11 @@ class CategoryAPIView(ListAPIView):
 class SubCategoryAPIView(APIView):
     serializer_class = SubCategorySerializer
 
-    def get_queryset(self):
-        return SubCategory.objects.filter(category__id=int(self.kwargs['pk']))
+    def get_queryset(self, pk):
+        return SubCategory.objects.filter(category__id=int(pk))
 
-    def get(self, *args, **kwargs):
-        serializer = self.serializer_class(self.get_queryset(), many=True)
+    def get(self, request, pk, format=None):
+        serializer = self.serializer_class(self.get_queryset(pk), many=True)
         serializer.is_valid(raise_exception=True)
         for item in serializer.data:
             old_url = item.get('image')
