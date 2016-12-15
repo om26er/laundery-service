@@ -86,16 +86,19 @@ class CategoryAPIView(ListAPIView):
 class SubCategoryAPIView(APIView):
     serializer_class = SubCategorySerializer
 
-    def get_queryset(self, pk):
-        return SubCategory.objects.filter(category__id=int(pk))
+    def get_queryset(self):
+        return SubCategory.objects.filter(category__id=int(self.kwargs['pk']))
 
-    def get(self, request, pk, format=None):
-        serializer = self.serializer_class(self.get_queryset(pk), many=True)
-        serializer.is_valid(raise_exception=True)
+    def get(self, *args, **kwargs):
+        serializer = self.serializer_class(self.get_queryset(), many=True)
         for item in serializer.data:
             old_url = item.get('image')
-            if 'localhost' in old_url:
+            if old_url:
                 item.update(
-                    {'image': old_url.replace('localhost', settings.SERVER_IP)}
+                    {
+                        'image': '{}{}{}'.format(
+                            'http://', settings.SERVER_IP, old_url
+                        )
+                    }
                 )
         return Response(serializer.data, status=status.HTTP_200_OK)
