@@ -54,3 +54,6 @@ class ConfigHelpers:
     def get_debug_setting(self):
         value = self.read_config_parameter(CONFIG_SECTION_DEFAULT, 'debug')
         return value == 'True'
+
+    def get_server_ip(self):
+        return self.read_config_parameter(CONFIG_SECTION_DEFAULT, 'server_ip')

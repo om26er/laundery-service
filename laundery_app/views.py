@@ -1,3 +1,7 @@
+from django.conf import settings
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -79,8 +83,19 @@ class CategoryAPIView(ListAPIView):
     queryset = Category.objects.all()
 
 
-class SubCategoryAPIView(ListAPIView):
+class SubCategoryAPIView(APIView):
     serializer_class = SubCategorySerializer
 
     def get_queryset(self):
         return SubCategory.objects.filter(category__id=int(self.kwargs['pk']))
+
+    def get(self, *args, **kwargs):
+        serializer = self.serializer_class(self.get_queryset(), many=True)
+        serializer.is_valid(raise_exception=True)
+        for item in serializer.data:
+            old_url = item.get('image')
+            if 'localhost' in old_url:
+                item.update(
+                    {'image': old_url.replace('localhost', settings.SERVER_IP)}
+                )
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -130,3 +130,5 @@ EMAIL_HOST_USER = config_helpers.get_email_credential_by_key('email')
 EMAIL_HOST_PASSWORD = config_helpers.get_email_credential_by_key('password')
 EMAIL_PORT = config_helpers.get_email_credential_by_key('port')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+SERVER_IP = config_helpers.get_server_ip()

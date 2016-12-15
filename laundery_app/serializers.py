@@ -51,4 +51,4 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubCategory
-        fields = ('name', 'price', 'image', )
+        fields = ('id', 'name', 'price', 'image', )
