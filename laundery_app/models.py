@@ -41,3 +41,12 @@ class SubCategory(models.Model):
         return '{} - {}@{} SAR'.format(
             self.category.name, self.name, self.price
         )
+
+
+class Service(models.Model):
+    service = models.CharField(max_length=255, unique=True, blank=False)
+    location = models.CharField(max_length=255, blank=False)
+    max_radius = models.CharField(max_length=255, blank=False)
+
+    def __str__(self):
+        return '{} within {} kilometers'.format(self.location, self.max_radius)
