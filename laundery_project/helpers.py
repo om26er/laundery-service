@@ -20,14 +20,23 @@
 
 import os
 import configparser
+import random
 
+import requests
+
+CONFIG_FILE = os.path.expanduser('~/sample_config.ini')
 CONFIG_SECTION_DEFAULT = 'defaults'
+CONFIG_SECTION_SMS_OTP = 'sms_otp'
 CONFIG_SECTION_EMAIL_CREDENTIALS = 'email_credentials'
 CONFIG_SECTION_DATABASE_CREDENTIALS = 'database_credentials'
 
+URL_SMS_OTP = 'http://smpp2.onlysms.ae/api/api_http.php?username={username}&' \
+              'password={password}&senderid={sender}&to={to}&' \
+              'text={message}&type=text'
+
 
 class ConfigHelpers:
-    def __init__(self, config_file):
+    def __init__(self, config_file=CONFIG_FILE):
         if not os.path.isfile(config_file):
             raise RuntimeError('Config file does not exist.')
         self.config = configparser.ConfigParser()
@@ -57,3 +66,17 @@ class ConfigHelpers:
 
     def get_server_ip(self):
         return self.read_config_parameter(CONFIG_SECTION_DEFAULT, 'server_ip')
+
+
+def generate_and_send_sms_otp(mobile_number):
+    ch = ConfigHelpers()
+    code = random.randint(10000, 99999)
+    url = URL_SMS_OTP.format(
+        username=ch.read_config_parameter(CONFIG_SECTION_SMS_OTP, 'username'),
+        password=ch.read_config_parameter(CONFIG_SECTION_SMS_OTP, 'password'),
+        sender=ch.read_config_parameter(CONFIG_SECTION_SMS_OTP, 'sender'),
+        to=mobile_number,
+        message=code,
+    )
+    requests.post(url)
+    return code

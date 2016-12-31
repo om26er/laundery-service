@@ -6,8 +6,8 @@ from simple_login.models import BaseUser
 class User(BaseUser):
     full_name = models.CharField(max_length=255, blank=False)
     mobile_number = models.CharField(max_length=255, blank=False)
-    account_activation_sms_otp = None
-    password_reset_sms_otp = None
+    account_activation_email_otp = None
+    password_reset_email_otp = None
 
 
 class Address(models.Model):

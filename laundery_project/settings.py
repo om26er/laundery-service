@@ -1,10 +1,9 @@
 import os
 
-from laundery_project.helpers import ConfigHelpers
+from laundery_project.helpers import ConfigHelpers, generate_and_send_sms_otp
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONFIG_FILE = os.path.expanduser('~/sample_config.ini')
-config_helpers = ConfigHelpers(CONFIG_FILE)
+config_helpers = ConfigHelpers()
 SECRET_KEY = 'rxx)hu(ez5@m3hsq2r*6iri_w7@53r5o8)j_r&+ii&!%kpn^0h'
 DEBUG = config_helpers.get_debug_setting()
 
@@ -36,6 +35,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'laundery_project.urls'
 AUTH_USER_MODEL = 'laundery_app.User'
 APP_NAME = 'Laundry Service'
+OTP_METHODS = ['SMS']
+ACCOUNT_ACTIVATION_SMS_OTP_CALLABLE = generate_and_send_sms_otp
+ACCOUNT_MOBILE_NUMBER_FIELD = 'mobile_number'
 
 TEMPLATES = [
     {
