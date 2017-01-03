@@ -25,6 +25,7 @@ from laundery_app.serializers import (
     AddressSerializer,
     CategorySerializer,
     SubCategorySerializer,
+    ServiceRequestSerializer,
 )
 
 
@@ -102,3 +103,8 @@ class SubCategoryAPIView(APIView):
                     }
                 )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ServiceRequestAPIView(CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ServiceRequestSerializer

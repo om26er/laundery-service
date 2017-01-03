@@ -28,7 +28,7 @@ class ServiceAdmin(admin.ModelAdmin):
         return False
 
     def has_add_permission(self, request):
-        return False
+        return True
 
 
 admin.site.register(User, UserAdmin)

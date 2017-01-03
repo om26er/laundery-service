@@ -50,3 +50,11 @@ class Service(models.Model):
 
     def __str__(self):
         return '{} within {} kilometers'.format(self.location, self.max_radius)
+
+
+class ServiceRequest(models.Model):
+    item = models.ForeignKey(SubCategory)
+    done = models.BooleanField(default=False)
+    quantity = models.IntegerField(blank=False)
+    pick_location = models.CharField(max_length=255, blank=False)
+    drop_location = models.CharField(max_length=255, blank=False)

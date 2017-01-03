@@ -1,7 +1,13 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from laundery_app.models import User, Address, Category, SubCategory
+from laundery_app.models import (
+    User,
+    Address,
+    Category,
+    SubCategory,
+    ServiceRequest,
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -52,3 +58,14 @@ class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
         fields = ('id', 'name', 'price', 'image', )
+
+
+class ServiceRequestSerializer(serializers.ModelSerializer):
+    done = serializers.BooleanField(read_only=True)
+    quantity = serializers.IntegerField(required=True)
+    pick_location = serializers.CharField(required=True)
+    drop_location = serializers.CharField(required=True)
+
+    class Meta:
+        model = ServiceRequest
+        fields = ('item', 'done', 'quantity', 'pick_location', 'drop_location')
