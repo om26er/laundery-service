@@ -11,7 +11,7 @@ class User(BaseUser):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=False)
     location = models.CharField(max_length=255, blank=False)
 
@@ -28,7 +28,7 @@ class Category(models.Model):
 
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=False)
     price = models.CharField(max_length=255, blank=False)
     image = models.ImageField(blank=True)
@@ -52,9 +52,20 @@ class Service(models.Model):
         return '{} within {} kilometers'.format(self.location, self.max_radius)
 
 
-class ServiceRequest(models.Model):
-    item = models.ForeignKey(SubCategory)
-    done = models.BooleanField(default=False)
+class ServiceItem(models.Model):
+    item = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    request = models.ForeignKey(
+        'ServiceRequest',
+        related_name='service_items',
+        on_delete=models.CASCADE
+    )
     quantity = models.IntegerField(blank=False)
+
+
+class ServiceRequest(models.Model):
+    done = models.BooleanField(default=False)
     pick_location = models.CharField(max_length=255, blank=False)
     drop_location = models.CharField(max_length=255, blank=False)
+
+    def __str__(self):
+        return 'Request for {}'.format(self.pick_location)

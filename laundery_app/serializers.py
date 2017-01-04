@@ -7,6 +7,7 @@ from laundery_app.models import (
     Category,
     SubCategory,
     ServiceRequest,
+    ServiceItem,
 )
 
 
@@ -60,12 +61,29 @@ class SubCategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'price', 'image', )
 
 
-class ServiceRequestSerializer(serializers.ModelSerializer):
-    done = serializers.BooleanField(read_only=True)
+class ServiceItemSerializer(serializers.ModelSerializer):
     quantity = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = ServiceItem
+        fields = ('item', 'quantity')
+
+
+class ServiceRequestSerializer(serializers.ModelSerializer):
+    service_items = ServiceItemSerializer(many=True)
+    done = serializers.BooleanField(read_only=True)
     pick_location = serializers.CharField(required=True)
     drop_location = serializers.CharField(required=True)
 
     class Meta:
         model = ServiceRequest
-        fields = ('item', 'done', 'quantity', 'pick_location', 'drop_location')
+        fields = ('done', 'pick_location', 'drop_location', 'service_items')
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('service_items')
+        request = ServiceRequest.objects.create(**validated_data)
+        for item_data in items_data:
+            _item = item_data.pop('item')
+            ServiceItem.objects.create(
+                item=_item, request=request, **item_data)
+        return request

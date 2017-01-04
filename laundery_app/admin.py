@@ -2,7 +2,7 @@ from django.contrib import admin
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import Group
 
-from laundery_app.models import User, Category, SubCategory, Service
+from laundery_app.models import User, Category, SubCategory, Service, ServiceRequest, ServiceItem
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -31,9 +31,21 @@ class ServiceAdmin(admin.ModelAdmin):
         return True
 
 
+class RequestItemsInline(admin.TabularInline):
+    model = ServiceItem
+
+
+class ServiceRequestAdmin(admin.ModelAdmin):
+    inlines = [RequestItemsInline]
+
+    class Meta:
+        model = ServiceRequest
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Service, ServiceAdmin)
+admin.site.register(ServiceRequest, ServiceRequestAdmin)
 admin.site.unregister(Token)
 admin.site.unregister(Group)
