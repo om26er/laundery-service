@@ -14,6 +14,15 @@ class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=False)
     location = models.CharField(max_length=255, blank=False)
+    drop_on_pickup_location = models.BooleanField(default=True)
+    pickup_house_number = models.CharField(max_length=255, blank=False)
+    pickup_city = models.CharField(max_length=255, blank=False)
+    pickup_street = models.CharField(max_length=255, blank=False)
+    pickup_zip = models.CharField(max_length=255, blank=False)
+    drop_house_number = models.CharField(max_length=255, blank=True)
+    drop_city = models.CharField(max_length=255, blank=True)
+    drop_street = models.CharField(max_length=255, blank=True)
+    drop_zip = models.CharField(max_length=255, blank=True)
 
 
 class Category(models.Model):
@@ -64,8 +73,7 @@ class ServiceItem(models.Model):
 
 class ServiceRequest(models.Model):
     done = models.BooleanField(default=False)
-    pick_location = models.CharField(max_length=255, blank=False)
-    drop_location = models.CharField(max_length=255, blank=False)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'Request for {}'.format(self.pick_location)
+        return 'Request for {}'.format(self.address.location)

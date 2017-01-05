@@ -32,14 +32,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(required=True)
-    location = serializers.CharField(required=True)
-
     class Meta:
         model = Address
         fields = (
+            'id',
             'name',
             'location',
+            'drop_on_pickup_location',
+            'pickup_house_number',
+            'pickup_city',
+            'pickup_street',
+            'pickup_zip',
+            'drop_house_number',
+            'drop_city',
+            'drop_street',
+            'drop_zip',
         )
 
 
@@ -82,22 +89,24 @@ class ServiceItemSerializer(serializers.ModelSerializer):
 
 class ServiceRequestSerializer(serializers.ModelSerializer):
     service_items = ServiceItemSerializer(many=True)
+    address = AddressSerializer(read_only=True)
     done = serializers.BooleanField(read_only=True)
-    pick_location = serializers.CharField(required=True)
-    drop_location = serializers.CharField(required=True)
 
     class Meta:
         model = ServiceRequest
         fields = (
             'done',
-            'pick_location',
-            'drop_location',
+            'address',
             'service_items',
         )
 
+    def run_validation(self, data=None):
+        self._address_id = data.get('address')
+        return super().run_validation(data)
+
     def create(self, validated_data):
         items_data = validated_data.pop('service_items')
-        request = ServiceRequest.objects.create(**validated_data)
+        request = ServiceRequest.objects.create(address_id=self._address_id)
         for item_data in items_data:
             _item = item_data.pop('item')
             ServiceItem.objects.create(
