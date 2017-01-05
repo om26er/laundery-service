@@ -2,7 +2,14 @@ from django.contrib import admin
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import Group
 
-from laundery_app.models import User, Category, SubCategory, Service, ServiceRequest, ServiceItem
+from laundery_app.models import (
+    User,
+    Category,
+    SubCategory,
+    Service,
+    ServiceRequest,
+    ServiceItem,
+)
 
 
 class UserAdmin(admin.ModelAdmin):

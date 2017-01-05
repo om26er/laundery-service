@@ -8,7 +8,6 @@ from rest_framework.generics import (
     ListCreateAPIView,
 )
 from rest_framework import permissions
-
 from simple_login.views import (
     ActivationKeyRequestAPIView,
     RetrieveUpdateDestroyProfileAPIView,

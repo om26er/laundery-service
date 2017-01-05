@@ -48,7 +48,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', )
+        fields = (
+            'id',
+            'name',
+        )
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
@@ -58,7 +61,12 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubCategory
-        fields = ('id', 'name', 'price', 'image', )
+        fields = (
+            'id',
+            'name',
+            'price',
+            'image',
+        )
 
 
 class ServiceItemSerializer(serializers.ModelSerializer):
@@ -66,7 +74,10 @@ class ServiceItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceItem
-        fields = ('item', 'quantity')
+        fields = (
+            'item',
+            'quantity',
+        )
 
 
 class ServiceRequestSerializer(serializers.ModelSerializer):
@@ -77,7 +88,12 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceRequest
-        fields = ('done', 'pick_location', 'drop_location', 'service_items')
+        fields = (
+            'done',
+            'pick_location',
+            'drop_location',
+            'service_items',
+        )
 
     def create(self, validated_data):
         items_data = validated_data.pop('service_items')
