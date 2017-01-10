@@ -18,7 +18,13 @@ from simple_login.views import (
     StatusAPIView,
 )
 
-from laundery_app.models import User, Address, Category, SubCategory
+from laundery_app.models import (
+    User,
+    Address,
+    Category,
+    SubCategory,
+    ServiceRequest,
+)
 from laundery_app.serializers import (
     UserSerializer,
     AddressSerializer,
@@ -104,6 +110,17 @@ class SubCategoryAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ServiceRequestAPIView(CreateAPIView):
+class ServiceRequestAPIView(ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ServiceRequestSerializer
+
+    def get_queryset(self):
+        return ServiceRequest.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        request.data['user'] = self.request.user.id
+        service_items = request.data['service_items']
+        if len(service_items) == 0:
+            return Response(
+                {'message': 'service_items must not be empty'}, 400)
+        return super().post(request, *args, **kwargs)

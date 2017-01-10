@@ -78,5 +78,6 @@ def generate_and_send_sms_otp(mobile_number):
         to=mobile_number,
         message=code,
     )
+    print(url)
     requests.post(url)
     return code

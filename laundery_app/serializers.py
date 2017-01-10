@@ -87,6 +87,12 @@ class ServiceItemSerializer(serializers.ModelSerializer):
         )
 
 
+class ServiceRequestValidationSerializer(serializers.Serializer):
+    service_items = serializers.ListField(required=True)
+    address = serializers.IntegerField(required=True)
+    user = serializers.IntegerField(required=True)
+
+
 class ServiceRequestSerializer(serializers.ModelSerializer):
     service_items = ServiceItemSerializer(many=True)
     address = AddressSerializer(read_only=True)
@@ -98,6 +104,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
             'done',
             'address',
             'service_items',
+            'user',
         )
 
     def run_validation(self, data=None):
@@ -106,7 +113,8 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         items_data = validated_data.pop('service_items')
-        request = ServiceRequest.objects.create(address_id=self._address_id)
+        request = ServiceRequest.objects.create(
+            address_id=self._address_id, user=validated_data.get('user'))
         for item_data in items_data:
             _item = item_data.pop('item')
             ServiceItem.objects.create(

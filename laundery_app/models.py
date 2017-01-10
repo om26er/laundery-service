@@ -72,6 +72,7 @@ class ServiceItem(models.Model):
 
 
 class ServiceRequest(models.Model):
+    user = models.ForeignKey(User)
     done = models.BooleanField(default=False)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
