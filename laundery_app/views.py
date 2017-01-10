@@ -6,6 +6,7 @@ from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
 )
 from rest_framework import permissions
 from simple_login.views import (
@@ -73,7 +74,7 @@ class Status(StatusAPIView):
     serializer_class = UserSerializer
 
 
-class AddAddressAPIView(ListCreateAPIView):
+class ListCreateAddressAPIView(ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     serializer_class = AddressSerializer
 
@@ -82,6 +83,14 @@ class AddAddressAPIView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class RetrieveUpdateDestroyAddressAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = AddressSerializer
+
+    def get_object(self):
+        return Address.objects.get(id=int(self.kwargs['pk']))
 
 
 class CategoryAPIView(ListAPIView):
