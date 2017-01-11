@@ -99,6 +99,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
     service_items = ServiceItemSerializer(many=True)
     address = AddressSerializer(read_only=True)
     done = serializers.BooleanField(read_only=True)
+    created = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = ServiceRequest
@@ -107,6 +108,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
             'address',
             'service_items',
             'user',
+            'created'
         )
 
     def run_validation(self, data=None):

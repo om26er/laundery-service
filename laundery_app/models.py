@@ -79,6 +79,7 @@ class ServiceRequest(models.Model):
     user = models.ForeignKey(User, null=True)
     done = models.BooleanField(default=False)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return 'Request for {}'.format(self.address.location)
