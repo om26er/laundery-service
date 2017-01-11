@@ -78,12 +78,14 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
 class ServiceItemSerializer(serializers.ModelSerializer):
     quantity = serializers.IntegerField(required=True)
+    name = serializers.CharField(read_only=True)
 
     class Meta:
         model = ServiceItem
         fields = (
             'item',
             'quantity',
+            'name',
         )
 
 

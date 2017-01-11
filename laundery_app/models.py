@@ -70,6 +70,10 @@ class ServiceItem(models.Model):
     )
     quantity = models.IntegerField(blank=False)
 
+    @property
+    def name(self):
+        return self.item.name
+
 
 class ServiceRequest(models.Model):
     user = models.ForeignKey(User, null=True)
