@@ -24,6 +24,9 @@ class Address(models.Model):
     drop_street = models.CharField(max_length=255, blank=True)
     drop_zip = models.CharField(max_length=255, blank=True)
 
+    def __str__(self):
+        return '{}\' {}'.format(self.user.name, self.name)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, blank=False)
@@ -82,4 +85,4 @@ class ServiceRequest(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return 'Request for {}'.format(self.address.location)
+        return 'Request by {} ({})'.format(self.user.name, self.user.email)

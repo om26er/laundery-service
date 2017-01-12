@@ -40,10 +40,21 @@ class ServiceAdmin(admin.ModelAdmin):
 
 class RequestItemsInline(admin.TabularInline):
     model = ServiceItem
+    readonly_fields = ('quantity', 'request', )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 class ServiceRequestAdmin(admin.ModelAdmin):
     inlines = [RequestItemsInline]
+    readonly_fields = ('address', )
 
     class Meta:
         model = ServiceRequest
