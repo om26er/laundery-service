@@ -25,7 +25,7 @@ class Address(models.Model):
     drop_zip = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return '{}\' {}'.format(self.user.name, self.name)
+        return '{}\' {}'.format(self.user.full_name, self.name)
 
 
 class Category(models.Model):
