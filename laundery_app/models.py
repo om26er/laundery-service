@@ -85,4 +85,5 @@ class ServiceRequest(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return 'Request by {} ({})'.format(self.user.name, self.user.email)
+        return 'Request by {} ({})'.format(
+            self.user.full_name, self.user.email)
