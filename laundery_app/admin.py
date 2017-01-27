@@ -45,7 +45,7 @@ class RequestItemsInline(admin.TabularInline):
 
 class ServiceRequestAdmin(admin.ModelAdmin):
     inlines = [RequestItemsInline]
-    readonly_fields = ('address', )
+    readonly_fields = ('address', 'laundry_type', )
 
     class Meta:
         model = ServiceRequest

@@ -83,6 +83,12 @@ class ServiceRequest(models.Model):
     done = models.BooleanField(default=False)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, null=True)
+    drop_time = models.CharField(max_length=255, blank=False)
+    laundry_type = models.CharField(
+        max_length=255,
+        blank=False,
+        choices=(('express', 'express'), ('normal', 'normal'))
+    )
 
     def __str__(self):
         return 'Request by {} ({})'.format(

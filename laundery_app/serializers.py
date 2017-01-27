@@ -108,7 +108,9 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
             'address',
             'service_items',
             'user',
-            'created'
+            'created',
+            'laundry_type',
+            'drop_time',
         )
 
     def run_validation(self, data=None):
@@ -117,8 +119,9 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         items_data = validated_data.pop('service_items')
+        user = validated_data.pop('user')
         request = ServiceRequest.objects.create(
-            address_id=self._address_id, user=validated_data.get('user'))
+            address_id=self._address_id, user=user, **validated_data)
         for item_data in items_data:
             _item = item_data.pop('item')
             ServiceItem.objects.create(
