@@ -53,6 +53,9 @@ class ServiceRequestAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return ServiceRequest.objects.filter(laundry_type='normal')
 
+    def has_add_permission(self, request):
+        return False
+
 
 class ServiceRequestProxy(ServiceRequest):
     class Meta:
@@ -70,6 +73,9 @@ class ExpressServiceRequestAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return ServiceRequest.objects.filter(laundry_type='express')
+
+    def has_add_permission(self, request):
+        return False
 
 
 admin.site.register(User, UserAdmin)
