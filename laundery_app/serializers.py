@@ -100,6 +100,8 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
     address = AddressSerializer(read_only=True)
     done = serializers.BooleanField(read_only=True)
     created = serializers.DateTimeField(read_only=True)
+    laundry_type = serializers.CharField(required=True)
+    drop_time = serializers.CharField(required=True)
 
     class Meta:
         model = ServiceRequest
