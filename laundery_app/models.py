@@ -42,7 +42,7 @@ class Category(models.Model):
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=False)
-    price = models.CharField(max_length=255, blank=False)
+    price = models.IntegerField(blank=False)
     image = models.ImageField(blank=True)
 
     class Meta:
@@ -77,18 +77,21 @@ class ServiceItem(models.Model):
     def name(self):
         return self.item.name
 
+    @property
+    def price(self):
+        return self.item.price * self.quantity
+
 
 class ServiceRequest(models.Model):
-    user = models.ForeignKey(User, null=True)
+    user = models.ForeignKey(User)
     done = models.BooleanField(default=False)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True, null=True)
-    drop_time = models.CharField(max_length=255, blank=False, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    drop_time = models.CharField(max_length=255, blank=False)
     laundry_type = models.CharField(
         max_length=255,
         blank=False,
         choices=(('express', 'express'), ('normal', 'normal')),
-        null=True
     )
 
     def __str__(self):

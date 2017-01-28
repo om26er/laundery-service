@@ -40,15 +40,36 @@ class ServiceAdmin(admin.ModelAdmin):
 
 class RequestItemsInline(admin.TabularInline):
     model = ServiceItem
-    readonly_fields = ('quantity', 'request', 'item', )
+    readonly_fields = ('quantity', 'request', 'item', 'price', )
 
 
 class ServiceRequestAdmin(admin.ModelAdmin):
     inlines = [RequestItemsInline]
-    readonly_fields = ('address', 'laundry_type', 'user')
+    readonly_fields = ('address', 'laundry_type', 'user', 'drop_time')
 
     class Meta:
         model = ServiceRequest
+
+    def get_queryset(self, request):
+        return ServiceRequest.objects.filter(laundry_type='normal')
+
+
+class ServiceRequestProxy(ServiceRequest):
+    class Meta:
+        verbose_name = 'Express Service Request'
+        verbose_name_plural = 'Express Service Requests'
+        proxy = True
+
+
+class ExpressServiceRequestAdmin(admin.ModelAdmin):
+    inlines = [RequestItemsInline]
+    readonly_fields = ('address', 'laundry_type', 'user', 'drop_time')
+
+    class Meta:
+        model = ServiceRequestProxy
+
+    def get_queryset(self, request):
+        return ServiceRequest.objects.filter(laundry_type='express')
 
 
 admin.site.register(User, UserAdmin)
@@ -56,5 +77,6 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(ServiceRequest, ServiceRequestAdmin)
+admin.site.register(ServiceRequestProxy, ExpressServiceRequestAdmin)
 admin.site.unregister(Token)
 admin.site.unregister(Group)
